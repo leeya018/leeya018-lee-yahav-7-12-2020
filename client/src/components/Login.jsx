@@ -49,7 +49,7 @@ export default function Login({ logged, onHandleLogged }) {
   return (
 
     <div className="App">
-      <h1>Login</h1>
+      <h1 style={{color:"blue"}}>Login</h1>
       <Form>
         <Form.Group controlId="formBasicEmail">
           <Form.Control placeholder="Enter username" onChange={(e) => handleUsername(e)} />

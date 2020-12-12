@@ -41,7 +41,7 @@ getEmailsByUser = (username) => {
 
 deleteEmail = (id) => {
     let foundEmail = db.emails.find(email => email._id == id)
-    db.emails.filter(email => id !== email._id)
+    db.emails = db.emails.filter(email => id !== email._id)
     return foundEmail ? foundEmail._id : null
 }
 
