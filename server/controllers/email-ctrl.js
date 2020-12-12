@@ -1,4 +1,3 @@
-const Email = require('../models/email-model')
 let util = require("../util")
 
 createEmail = (req, res) => {
