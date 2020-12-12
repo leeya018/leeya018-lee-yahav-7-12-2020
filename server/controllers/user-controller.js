@@ -1,6 +1,7 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const UserModel = require("../models/user-model");
+const util = require("../util")
 
 signup = (req, res) => {
   let { username, password } = req.body;
@@ -10,31 +11,17 @@ signup = (req, res) => {
   let salt = bcrypt.genSaltSync(10);
   let hash = bcrypt.hashSync(password, salt);
 
-  UserModel.findOne({ username: username }, (err, user) => {
-    if (err) {
-      return res.status(400).json({ success: false, error: err })
-    }
-    if (user) {
-      return res.status(400).json({ message: "User is already exists in Db" });
-    }
-    let newUser = new UserModel({ username, password: hash, creationDate: new Date() })
+  let foundUser = util.findUser(username, password)
+  if (foundUser) {
+    return res.status(400).json({ message: "User is already exists in Db" });
+  }
+  let newUser = { username, password: hash, creationDate: new Date() }
 
-    if (!newUser) {
-      return res.status(400).json({ success: false, error: err })
-    }
-    newUser.save()
-      .then(() => {
-        return res.status(201).json({
-          success: true,
-          id: newUser._id,
-          message: 'user created!',
-        })
-      }).catch(error => {
-        return res.status(400).json({
-          error,
-          message: 'user not created!',
-        })
-      })
+  let userId = util.addUser(newUser)
+  return res.status(201).json({
+    success: true,
+    id: userId,
+    message: 'user created!',
   })
 }
 signin = (req, res) => {
@@ -46,34 +33,26 @@ signin = (req, res) => {
     });
   }
 
-  UserModel.findOne({ username: username }, (err, user) => {
-    if (err) {
-      return res.status(400).json({ success: false, error: err })
-    }
-    if (!user) {
-      return res.status(400).json({
-        message: "user does not exists"
-      });
-    }
-    let isMatch = bcrypt.compareSync(password, user.password);
-    if (!isMatch) {
-      return res.status(401).json({
-        message: "Wrong password"
-      });
-    }
-    let token = jwt.sign({
-      exp: Math.floor(Date.now() / 1000) + 60 * 60 * 100, // 100 hour expiration
-      username: user.username,
-    }, process.env.PRIVATE_KEY);
-    return res.status(200).json({
-      message: "You are logged in",
-      token: "Bearer " + token
+  let foundUser = util.findUser(username, password)
+  if (!foundUser) {
+    return res.status(400).json({
+      message: "user does not exists"
     });
-  })
-
-
-
-
+  }
+  let isMatch = bcrypt.compareSync(password, foundUser.password);
+  if (!isMatch) {
+    return res.status(401).json({
+      message: "Wrong password"
+    });
+  }
+  let token = jwt.sign({
+    exp: Math.floor(Date.now() / 1000) + 60 * 60 * 100, // 100 hour expiration
+    username: foundUser.username,
+  }, process.env.PRIVATE_KEY);
+  return res.status(200).json({
+    message: "You are logged in",
+    token: "Bearer " + token
+  });
 }
 
 module.exports = { signup, signin };

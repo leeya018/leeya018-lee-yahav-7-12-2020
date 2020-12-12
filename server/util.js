@@ -25,6 +25,24 @@ let db = {
     users: [],
     emails: []
 }
+//=====users ====
+findUser = ( username, password)=>{
+    let userFound = db.users.find(user=>(user.username == username))
+    return userFound
+
+}
+checkUserAndPass = ( username, password)=>{
+    let userFound = db.users.find(user=>(user.username == username && user.password == password))
+    return userFound
+
+}
+addUser = ( newUser )=>{
+    newUser._id = Date.now()
+    db.users.push(newUser)
+    return newUser._id
+}
+
+//=====emails ====
 
 
 addEmail = (email) => {
@@ -50,4 +68,4 @@ deleteEmail = (id) => {
 
 
 
-module.exports = { addEmail, initDb, getEmails, getEmailsByUser, deleteEmail }
+module.exports = { addEmail, initDb, getEmails, getEmailsByUser, deleteEmail,findUser,addUser }
