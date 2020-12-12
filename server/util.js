@@ -1,10 +1,11 @@
 
-
+// this is the db with 2 arrays for emails and users 
 let db = {
     users: [],
     emails: []
 }
-//=====users ====
+
+//=====users - all users db functionality ====
 findUser = ( username, password)=>{
     let userFound = db.users.find(user=>(user.username == username))
     return userFound
@@ -21,7 +22,7 @@ addUser = ( newUser )=>{
     return newUser._id
 }
 
-//=====emails ====
+//=====emails - all emails db functionality====
 
 
 addEmail = (email) => {

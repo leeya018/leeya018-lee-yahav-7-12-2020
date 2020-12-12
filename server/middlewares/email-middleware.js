@@ -1,3 +1,4 @@
+// check that all fields are filled with data
 
 validateFields = (req, res, next) => {
     let { sender,receiver,message,subject } = req.body

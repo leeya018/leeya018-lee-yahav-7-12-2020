@@ -1,5 +1,5 @@
+// routing  for emails
 const express = require('express')
-
 const EmailCtrl = require('../controllers/email-ctrl')
 const {validateFields} = require('../middlewares/email-middleware')
 const {authenticate} = require('../middlewares/auth-middleware')

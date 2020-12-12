@@ -1,6 +1,8 @@
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
+//authenticate the user which want to connect , 
+//only users with valid tokens can connect and see their own emails
 function authenticate(req, res, next) {
   let auth = req.headers.authorization;
   
@@ -17,7 +19,7 @@ function authenticate(req, res, next) {
   });
 }
 
-
+// check that all fields are filled with data
 validateFields = (req, res, next) => {
   let { username, password } = req.body
   let errMessages = []
