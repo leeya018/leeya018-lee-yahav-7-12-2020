@@ -49,7 +49,6 @@ export default function ComposeEmail({ logged, onHandleLogged }) {
 
 
     const emailInsertion = () => {
-        debugger
         let { subject, receiver, sender, message } = state
         api.insertEmail({ subject, receiver, sender, message }).then((res) => {
             dispatch({ type: "alert", payload: { alert: res.data.message, showSuccess: true, showFail: false, receiver: "", sender: util.getUsername(), subject: "", message: "" } })

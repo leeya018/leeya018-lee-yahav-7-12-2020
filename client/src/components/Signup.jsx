@@ -23,7 +23,6 @@ export default function Signup() {
       if (err.response.data.validation === false) {
         setMsg(err.response.data.errors)
       } else {
-        debugger
         setMsg([err.response.data.message])
       }
     })

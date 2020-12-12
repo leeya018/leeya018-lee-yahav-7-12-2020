@@ -28,7 +28,6 @@ export default function Login({ logged, onHandleLogged }) {
       onHandleLogged(true)
       navigate(`/emailslist`)
     }).catch(err => {
-      debugger
       if (err.response.data.validation === false) {
         setMsg(err.response.data.errors)
       } else {

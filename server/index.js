@@ -8,7 +8,7 @@ const emailRouter = require('./routes/email-router')
 const userRouter = require('./routes/user-router')
 
 const app = express()
-const apiPort = 3000
+const apiPort = process.env.PORT
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cors())
