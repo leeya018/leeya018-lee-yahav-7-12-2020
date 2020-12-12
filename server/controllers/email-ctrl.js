@@ -1,4 +1,5 @@
 const Email = require('../models/email-model')
+let util = require("../util")
 
 createEmail = (req, res) => {
     const body = req.body
@@ -10,77 +11,66 @@ createEmail = (req, res) => {
         })
     }
 
-    const email = new Email({ ...body, creationDate: new Date() })
+
+    const email = { ...body, creationDate: new Date() }
 
     if (!email) {
         return res.status(400).json({ success: false, error: err })
     }
 
-    email
-        .save()
-        .then(() => {
-            return res.status(201).json({
-                success: true,
-                id: email._id,
-                message: 'email created!',
-            })
+    let id = util.addEmail(email)
+    if (id) {
+        return res.status(201).json({
+            success: true,
+            id: id,
+            message: 'email created!',
         })
-        .catch(error => {
-            return res.status(400).json({
-                error,
-                message: 'email not created!',
-            })
+    } else {
+        return res.status(400).json({
+            error,
+            message: 'email not created!',
         })
+    }
 }
 
 
 getEmails = async (req, res) => {
-    await Email.find({}, (err, emails) => {
-        if (err) {
-            return res.status(400).json({ success: false, error: err })
-        }
-        if (!emails.length) {
-            return res
-                .status(404)
-                .json({ success: false, error: `No More Emails` })
-        }
-        return res.status(200).json({ success: true, emails })
-    }).catch(err => console.log(err))
+    let emails = util.getEmails()
+    if (!emails.length) {
+        return res
+            .status(404)
+            .json({ success: false, error: `No More Emails` })
+    }
+    return res.status(200).json({ success: true, emails })
+
 }
 
 
 getEmailsByUser = async (req, res) => {
     let { username } = req.params
-    await Email.find({ $or: [{ sender: username }, { receiver: username }] }, (err, emails) => {
-        if (err) {
-            return res.status(400).json({ success: false, error: err })
-        }
-        if (!emails.length) {
-            return res
-                .status(404)
-                .json({ success: false, error: `No More Emails` })
-        }
-        return res.status(200).json({ success: true, emails })
-    }).catch(err => console.log(err))
+    let emails = util.getEmailsByUser(username)
+
+    if (!emails.length) {
+        return res
+            .status(404)
+            .json({ success: false, error: `No More Emails` })
+    }
+    return res.status(200).json({ success: true, emails })
 }
 
 deleteEmails = async (req, res) => {
     let { id } = req.body
-    await Email.findByIdAndDelete(id, (err, email) => {
-        if (err) {
-            return res.status(400).json({ success: false, error: err })
-        }
-        if (!email) {
-            return res
-                .status(404)
-                .json({ success: false, error: `Email not found` })
-        }
-        return res.status(200).json({
-            success: true,
-            data: { id },
-            message: "email deleted"
-        })
-    }).catch(err => console.log(err))
+    let id_deletedEmail = util.deleteEmail(id)
+    if (!id_deletedEmail) {
+        return res
+            .status(404)
+            .json({ success: false, error: `Email not found` })
+    }
+    return res.status(200).json({
+        success: true,
+        data: { id_deletedEmail },
+        message: "email deleted"
+    })
 }
 
 module.exports = {

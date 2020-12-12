@@ -1,7 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
-const initDb = require('./util.js')
+const {initDb} = require('./util.js')
 
 const db = require('./db')
 const emailRouter = require('./routes/email-router')
