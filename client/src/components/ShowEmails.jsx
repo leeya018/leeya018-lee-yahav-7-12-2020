@@ -1,19 +1,18 @@
 import React, { useEffect, useReducer } from 'react'
-import ModalDelete from "./ModalDelete"
 import ListGroup from 'react-bootstrap/ListGroup'
 import Button from 'react-bootstrap/Button'
-import Alert from 'react-bootstrap/Alert'
 import util from "../util"
-import Card from 'react-bootstrap/Card'
+import Alert from 'react-bootstrap/Alert'
 import api from "../api/index"
 import Logout from "./Logout"
+import Email from "./Email";
 
 const initialState = {
     emailsList: [],
     alert: "",
     showFail: false,
     modalShow: false,
-
+    isSender: true
 };
 
 
@@ -77,35 +76,23 @@ export default function ShowEmails({ onHandleLogged }) {
                 <Logout onHandleLogged={onHandleLogged} />
             </div>}
             <h1>Emails List:</h1>
+            <button onClick={() => dispatch({ type: "update isSender", payload: { ...state, isSender: true } })}> from me </button>
+            <button onClick={() => dispatch({ type: "update isSender", payload: { ...state, isSender: false } })} > to me </button>
+
             <ListGroup variant="flush">
                 <ul>
                     {
-                        state.emailsList.map((email, index) => (
-                            < ListGroup.Item key={index} >
-                                <Card border="primary" className="text-center">
-                                    <Card.Body>
-                                        <Card.Title>{`subject: ${email.subject}`}</Card.Title>
-                                        <Card.Text>
-                                            {`sender: ${email.sender}`}
-                                        </Card.Text>
-                                        <Card.Text>
-                                            {`receiver: ${email.receiver}`}
-                                        </Card.Text>
-                                        <Card.Text>
-                                            {`message: ${email.message}`}
-                                        </Card.Text>
-                                    </Card.Body>
-                                    <ModalDelete
-                                        show={state.modalShow}
-                                        onHandleClose={closeModal}
-                                        onHandleDelete={deleteEmail}
-                                        chosenEmail={email} />
-                                    <Button variant="danger"
-                                        onClick={() => dispatch({ type: "open modal", payload: { modalShow: true } })}
-                                    >Delete</Button>
-                                </Card>
-                            </ListGroup.Item>
-                        ))
+                        state.emailsList.map((email, index) => {
+                            return <Email
+                                index={index}
+                                isSender={state.isSender}
+                                email={email}
+                                modalShow={state.modalShow}
+                                closeModal={closeModal}
+                                deleteEmail={deleteEmail}
+                                openModal={() => dispatch({ type: "open modal", payload: { modalShow: true } })}
+                            />
+                        })
                     }
                 </ul>
 
