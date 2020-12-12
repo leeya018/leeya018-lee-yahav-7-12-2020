@@ -21,7 +21,7 @@ function App() {
     '/login': () => <Login logged={logged} onHandleLogged={setlogged}/>,
     '/signup': () => <Signup />,
     '/composeemail': () => <ComposeEmail logged={logged} onHandleLogged={setlogged}/>,
-    '/emailslist': () => <ShowEmails onHandleLogged={setlogged}/>
+    '/emailslist': () => <ShowEmails logged={logged} onHandleLogged={setlogged}/>
 
   }
 

@@ -25,13 +25,13 @@ function reducer(state, action) {
     }
 
 }
-export default function ShowEmails({ onHandleLogged }) {
+export default function ShowEmails({ onHandleLogged, logged }) {
     debugger
     const [state, dispatch] = useReducer(reducer, initialState);
 
     useEffect(() => {
         getEmails()
-    }, [])
+    }, [logged])
 
     const getEmails = () => {
         let username = util.getUsername()
@@ -76,23 +76,37 @@ export default function ShowEmails({ onHandleLogged }) {
                 <Logout onHandleLogged={onHandleLogged} />
             </div>}
             <h1>Emails List:</h1>
-            <button onClick={() => dispatch({ type: "update isSender", payload: { ...state, isSender: true } })}> from me </button>
-            <button onClick={() => dispatch({ type: "update isSender", payload: { ...state, isSender: false } })} > to me </button>
+            {logged && <>
+                <Button style={{ margin: "1px" }} variant="primary" onClick={() => dispatch({ type: "update isSender", payload: { ...state, isSender: true } })}> sent </Button>
+                <Button style={{ margin: "1px" }} variant="primary" onClick={() => dispatch({ type: "update isSender", payload: { ...state, isSender: false } })} > inbox </Button>
+            </>
+
+            }
 
             <ListGroup variant="flush">
                 <ul>
                     {
                         state.emailsList.map((email, index) => {
-                            return <Email
-                                index={index}
-                                isSender={state.isSender}
-                                email={email}
-                                modalShow={state.modalShow}
-                                closeModal={closeModal}
-                                deleteEmail={deleteEmail}
-                                openModal={() => dispatch({ type: "open modal", payload: { modalShow: true } })}
-                            />
+                            let person
+
+                            if (state.isSender) {
+                                person = email.sender
+                            } else {
+                                person = email.receiver
+                            }
+                            let cond = logged ? util.getUsername() === person : true
+                            if (cond) {
+                                return <Email
+                                    index={index}
+                                    email={email}
+                                    modalShow={state.modalShow}
+                                    closeModal={closeModal}
+                                    deleteEmail={deleteEmail}
+                                    openModal={() => dispatch({ type: "open modal", payload: { modalShow: true } })}
+                                />
+                            }
                         })
+
                     }
                 </ul>
 
