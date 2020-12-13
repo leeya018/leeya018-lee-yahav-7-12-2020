@@ -10,14 +10,12 @@ export default function Login({ logged, onHandleLogged }) {
   let [username, setUsername] = useState("")
   let [password, setPassword] = useState("")
   let [msg, setMsg] = useState([])
-  let [showFail, setShowFail] = useState(false)
-  let [showSuccess, setShowSuccess] = useState(false)
 
   useEffect(() => {
     if (logged) {
       navigate(`/emailslist`)
     }
-  }, [])
+  }, [logged])
 
   const handleClick = () => {
     apis.login({ username, password }).then((res) => {
