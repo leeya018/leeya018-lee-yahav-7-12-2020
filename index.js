@@ -2,8 +2,8 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 
-const emailRouter = require('./routes/email-router')
-const userRouter = require('./routes/user-router')
+const emailRouter = require('./server/routes/email-router')
+const userRouter = require('./server/routes/user-router')
 
 const app = express()
 const apiPort = process.env.PORT
