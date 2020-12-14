@@ -20,7 +20,7 @@ app.use(express.static(path.join(__dirname, 'client/build')));
 app.get('/', (req, res) => {
     res.send('Hello World!')
 })
-
+// app.use('/FASFASD', (req,res)=>res.send("THISIS THE "))
 app.use('/api', emailRouter)
 app.use('/api', userRouter)
 // ---------------- ADD THIS ----------------
@@ -30,5 +30,4 @@ app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname+'/client/build/index.html'));
   });
   // --------------------------------})
-
 app.listen(apiPort, () => console.log(`Server running on port ${apiPort}`))
