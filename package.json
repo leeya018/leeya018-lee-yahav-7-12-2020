@@ -4,8 +4,10 @@
   "description": "Project with client and server",
   "main": "index.js",
   "scripts": {
-    "dev": "npm-run-all -p server",
+    "start": "nodemon index",
+    "heroku-postbuild": "cd client && npm install && npm run build",
     "server": "nodemon index.js",
+    "stat": "npm-run-all -p server",
     "client": "set PORT=8000 && react-scripts start"
   },
   "repository": {
