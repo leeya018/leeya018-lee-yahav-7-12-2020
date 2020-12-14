@@ -14,11 +14,10 @@ you can see the INBOX and SENT
 ## Usage
 
 use the following commands:   
-db:
+
 navigate to project folder:
 
-server: (run the following commands)    
-- cd server 
+(run the following commands)    
 - npm install 
 - npm start 
 
@@ -27,7 +26,7 @@ client: (run the following commands)
 - npm install 
 - npm start
        
-Url for the app : http://localhost:8000/
+Url for the app : http://localhost:3000/
 
 
 ## author 
