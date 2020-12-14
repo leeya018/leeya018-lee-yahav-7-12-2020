@@ -5,10 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index",
-    "heroku-postbuild": "cd client && npm install && npm run build",
-    "server": "nodemon index.js",
-    "stat": "npm-run-all -p server",
-    "client": "set PORT=8000 && react-scripts start"
+    "heroku-postbuild": "cd client && npm install && npm run build"
   },
   "repository": {
     "type": "git",

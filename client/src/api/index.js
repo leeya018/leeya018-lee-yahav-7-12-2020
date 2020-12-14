@@ -8,8 +8,11 @@ const getToken = () => {
 }
 
 const api = axios.create({
-    baseURL: 'http://localhost:3000/api',
+    baseURL: '/api',
 })
+// const api = axios.create({
+//     baseURL: 'http://localhost:5000/api',
+// })
 
 export const insertEmail = payload => api.post(`/email`, payload)
 export const getAllEmails = () => api.get(`/emails`)
